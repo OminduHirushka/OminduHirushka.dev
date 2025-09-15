@@ -4,6 +4,7 @@ import Hero from "./components/Hero";
 import ModernElements from "./components/ModernElements";
 import Navbar from "./components/Navbar";
 import ParticleBackground from "./components/ParticleBackground";
+import Projects from "./components/Projects";
 import Skills from "./components/Skills";
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <About />
         <Skills />
         <Experience />
+        <Projects />
       </main>
     </div>
   );
