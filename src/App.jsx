@@ -1,4 +1,5 @@
 import About from "./components/About";
+import Education from "./components/Education";
 import Experience from "./components/Experience";
 import Hero from "./components/Hero";
 import ModernElements from "./components/ModernElements";
@@ -20,6 +21,7 @@ function App() {
         <Skills />
         <Experience />
         <Projects />
+        <Education />
       </main>
     </div>
   );
