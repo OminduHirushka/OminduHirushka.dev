@@ -3,6 +3,7 @@ import Hero from "./components/Hero";
 import ModernElements from "./components/ModernElements";
 import Navbar from "./components/Navbar";
 import ParticleBackground from "./components/ParticleBackground";
+import Skills from "./components/Skills";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <main className="relative z-10">
         <Hero />
         <About />
+        <Skills />
       </main>
     </div>
   );
