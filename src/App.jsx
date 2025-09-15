@@ -1,3 +1,4 @@
+import Hero from "./components/Hero";
 import ModernElements from "./components/ModernElements";
 import Navbar from "./components/Navbar";
 import ParticleBackground from "./components/ParticleBackground";
@@ -8,6 +9,10 @@ function App() {
       <ParticleBackground />
       <ModernElements />
       <Navbar />
+
+      <main className="relative z-10">
+        <Hero />
+      </main>
     </div>
   );
 }
