@@ -1,3 +1,4 @@
+import About from "./components/About";
 import Hero from "./components/Hero";
 import ModernElements from "./components/ModernElements";
 import Navbar from "./components/Navbar";
@@ -12,6 +13,7 @@ function App() {
 
       <main className="relative z-10">
         <Hero />
+        <About />
       </main>
     </div>
   );
