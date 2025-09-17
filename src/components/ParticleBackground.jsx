@@ -1,12 +1,35 @@
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import performanceUtils from "../utils/performance";
 
 const ParticleBackground = () => {
-  const particles = Array.from({ length: 50 }, (_, i) => ({
+  const [animationSettings, setAnimationSettings] = useState(
+    performanceUtils.getAnimationSettings()
+  );
+
+  useEffect(() => {
+    const updateSettings = () => {
+      setAnimationSettings(performanceUtils.getAnimationSettings());
+    };
+
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    mediaQuery.addEventListener("change", updateSettings);
+    window.addEventListener("resize", updateSettings);
+
+    return () => {
+      mediaQuery.removeEventListener("change", updateSettings);
+      window.removeEventListener("resize", updateSettings);
+    };
+  }, []);
+
+  const particleCount = animationSettings.particles;
+
+  const particles = Array.from({ length: particleCount }, (_, i) => ({
     id: i,
     x: Math.random() * 100,
     y: Math.random() * 100,
-    size: Math.random() * 4 + 1,
-    duration: Math.random() * 20 + 10,
+    size: Math.random() * 3 + 1,
+    duration: Math.random() * 15 + 8,
   }));
 
   return (
@@ -15,22 +38,31 @@ const ParticleBackground = () => {
       {particles.map((particle) => (
         <motion.div
           key={particle.id}
-          className="absolute bg-white/10 rounded-full blur-sm"
+          className="absolute bg-white/8 rounded-full"
           style={{
             left: `${particle.x}%`,
             top: `${particle.y}%`,
             width: `${particle.size}px`,
             height: `${particle.size}px`,
+            willChange: "transform, opacity",
           }}
-          animate={{
-            y: [0, -100, 0],
-            opacity: [0, 0.3, 0],
-          }}
-          transition={{
-            duration: particle.duration,
-            repeat: Infinity,
-            ease: "linear",
-          }}
+          animate={
+            animationSettings.effects
+              ? {
+                  y: [0, -80, 0],
+                  opacity: [0, 0.2, 0],
+                }
+              : {}
+          }
+          transition={
+            animationSettings.effects
+              ? {
+                  duration: particle.duration,
+                  repeat: Infinity,
+                  ease: "linear",
+                }
+              : {}
+          }
         />
       ))}
 
