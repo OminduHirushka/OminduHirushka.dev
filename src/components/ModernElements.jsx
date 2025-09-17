@@ -1,5 +1,5 @@
 import { motion, useScroll, useSpring } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   FaArrowUp,
   FaHome,
@@ -13,6 +13,9 @@ import {
 const ModernElements = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [showQuickNav, setShowQuickNav] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -21,14 +24,52 @@ const ModernElements = () => {
   });
 
   useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 300);
-      setShowQuickNav(window.scrollY > 0);
+    const checkMobile = () => {
+      const isMobileDevice =
+        window.innerWidth <= 768 ||
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        );
+      setIsMobile(isMobileDevice);
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const checkReducedMotion = () => {
+      setReducedMotion(
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      );
+    };
+
+    checkMobile();
+    checkReducedMotion();
+
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    mediaQuery.addEventListener("change", checkReducedMotion);
+
+    return () => mediaQuery.removeEventListener("change", checkReducedMotion);
   }, []);
+
+  const handleScroll = useCallback(() => {
+    const scrollY = window.scrollY;
+    setShowScrollTop(scrollY > 300);
+    setShowQuickNav(scrollY > 0);
+  }, []);
+
+  useEffect(() => {
+    let ticking = false;
+
+    const throttledScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", throttledScroll, { passive: true });
+    return () => window.removeEventListener("scroll", throttledScroll);
+  }, [handleScroll]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -256,32 +297,35 @@ const ModernElements = () => {
         </motion.div>
       </motion.button>
 
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-gray-800/10 to-gray-600/10 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 180, 360],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-gray-700/10 to-gray-500/10 rounded-full blur-3xl"
-          animate={{
-            scale: [1.2, 1, 1.2],
-            rotate: [360, 180, 0],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-      </div>
+      {/* Simplified background effects for better mobile performance */}
+      {!isMobile && !reducedMotion && (
+        <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+          <motion.div
+            className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-gray-800/5 to-gray-600/5 rounded-full blur-3xl"
+            animate={{
+              scale: [1, 1.1, 1],
+              rotate: [0, 90, 180],
+            }}
+            transition={{
+              duration: 30,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          />
+          <motion.div
+            className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-gray-700/5 to-gray-500/5 rounded-full blur-3xl"
+            animate={{
+              scale: [1.1, 1, 1.1],
+              rotate: [180, 90, 0],
+            }}
+            transition={{
+              duration: 35,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          />
+        </div>
+      )}
     </>
   );
 };
