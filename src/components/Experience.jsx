@@ -10,7 +10,7 @@ const Experience = () => {
 
   const experiences = [
     {
-      title: "Intern Full-Stack (React) Developer",
+      title: "Full-Stack (React) Developer",
       company: "CeyDigital Solutions PVT Ltd.",
       period: "2025 March - Present",
       location: "Bandarawela, Sri Lanka",
@@ -39,10 +39,25 @@ const Experience = () => {
   ];
 
   const courses = [
+    // {
+    //   title: "Cloud Computing with AWS",
+    //   provider: "LearnFi",
+    //   status: "In Progress",
+    // },
     {
-      title: "Cloud Computing with AWS",
-      provider: "LearnFi",
-      status: "In Progress",
+      title: "Software Engineer",
+      provider: "Hacker Rank",
+      status: "Completed",
+    },
+    {
+      title: "Rest API (Intermediate)",
+      provider: "Hacker Rank",
+      status: "Completed",
+    },
+    {
+      title: "JavaScript (Intermediate)",
+      provider: "Hacker Rank",
+      status: "Completed",
     },
     {
       title: "Comprehensive Master Java Developer",
@@ -100,6 +115,43 @@ const Experience = () => {
           </motion.h2>
 
           <div className="grid lg:grid-cols-2 gap-12">
+            <motion.div variants={itemVariants}>
+              <h3 className="text-2xl font-semibold text-white mb-8 flex items-center gap-3">
+                <FaBriefcase className="text-purple-400" />
+                Courses & Certifications
+              </h3>
+
+              <div className="space-y-4">
+                {courses.map((course, index) => (
+                  <motion.div
+                    key={index}
+                    variants={itemVariants}
+                    className="bg-gray-900/70 border border-gray-700 rounded-xl p-6 card-hover"
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <div className="flex justify-between items-start mb-1">
+                      <h4 className="text-lg font-semibold text-white">
+                        {course.title}
+                      </h4>
+                      <span
+                        className={`px-3 py-1 rounded-full text-sm font-medium ${
+                          course.status === "Completed"
+                            ? "bg-green-500/20 text-green-300 border border-green-500/30"
+                            : "bg-yellow-500/20 text-yellow-300 border border-yellow-500/30"
+                        }`}
+                      >
+                        {course.status}
+                      </span>
+                    </div>
+
+                    <p className="text-purple-400 font-medium mb-1">
+                      {course.provider}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
             <motion.div variants={itemVariants}>
               <h3 className="text-2xl font-semibold text-white mb-8 flex items-center gap-3">
                 <FaBriefcase className="text-blue-400" />
@@ -161,43 +213,6 @@ const Experience = () => {
                         </span>
                       ))}
                     </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div variants={itemVariants}>
-              <h3 className="text-2xl font-semibold text-white mb-8 flex items-center gap-3">
-                <FaBriefcase className="text-purple-400" />
-                Courses & Certifications
-              </h3>
-
-              <div className="space-y-4">
-                {courses.map((course, index) => (
-                  <motion.div
-                    key={index}
-                    variants={itemVariants}
-                    className="bg-gray-900/70 border border-gray-700 rounded-xl p-6 card-hover"
-                    whileHover={{ scale: 1.02 }}
-                  >
-                    <div className="flex justify-between items-start mb-1">
-                      <h4 className="text-lg font-semibold text-white">
-                        {course.title}
-                      </h4>
-                      <span
-                        className={`px-3 py-1 rounded-full text-sm font-medium ${
-                          course.status === "Completed"
-                            ? "bg-green-500/20 text-green-300 border border-green-500/30"
-                            : "bg-yellow-500/20 text-yellow-300 border border-yellow-500/30"
-                        }`}
-                      >
-                        {course.status}
-                      </span>
-                    </div>
-
-                    <p className="text-purple-400 font-medium mb-1">
-                      {course.provider}
-                    </p>
                   </motion.div>
                 ))}
               </div>
